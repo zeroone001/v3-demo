@@ -1,3 +1,8 @@
+<!--
+ * @Description: 请输入文件描述
+ * @Author: liuyongsheng
+ * @Date: 2020-05-27 01:50:14
+-->
 <template>
   <div>
     {{ msg }} - {{ msg2 }}
@@ -6,6 +11,10 @@
           :key="st.id"
           @click="reMov(index)">{{st.name}}</li>
     </ul>
+    <p>{{state3}}</p>
+    <button @click="change">按钮</button>
+    <hello-world :msg="msg"></hello-world>
+    <div ref="box">我是box</div>
   </div>
 </template>
 
@@ -18,8 +27,10 @@
   对数据进行修改，这样性能就好啦
 
 */
+// 
 import HelloWorld from './components/HelloWorld.vue'
 import { removeFun } from './componsition/removeFun.js';
+import { onMounted } from 'vue';
 import { toRaw, ref, reactive, isRef, isReactive, shallowReactive, shallowRef, triggerRef } from 'vue';
 export default {
   name: 'App',
@@ -31,21 +42,44 @@ export default {
       msg2: 'assdasda'
     }
   },
+  mounted () {
+    console.log('this', this.$refs.box);
+  },
+  // setup 函数的执行时机，beforeCreate 和 created 之间
   setup () {
     let msg = ref('我是谁!!!!');
     let state2 = reactive({
       name: 'lys',
       sex: 'qwe'
     });
-    console.log('toRaw', toRaw(state2));
+    let obj = {
+      tt: {
+        aa: '11'
+      }
+    }
+    let state3 = ref(obj.tt);
+    function change () {
+      state3.value.aa = '222';
+      console.log(state3, obj);
+    }
+    let box = ref(null);
+
+    onMounted(() => {
+      console.log('mounted::', box.value);
+    });
+
+
+    console.log('toRaw', state2, toRaw(state2), state3);
     console.log('msg-ref', msg);
     let { state, reMov } = removeFun();
     console.log('reactive:::', state.stu);
     return {
+      box,
       msg,
       state,
       reMov,
-      state2
+      state2,
+      change
     }
   }
 };
