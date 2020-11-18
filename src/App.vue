@@ -15,6 +15,7 @@
     <button @click="change">按钮</button>
     <hello-world :msg="msg"></hello-world>
     <div ref="box">我是box</div>
+    <my-button></my-button>
   </div>
 </template>
 
@@ -28,6 +29,7 @@
 
 */
 // 
+import MyButton from './components/MyButton.vue';
 import HelloWorld from './components/HelloWorld.vue'
 import { removeFun } from './componsition/removeFun.js';
 import { onMounted } from 'vue';
@@ -35,7 +37,8 @@ import { toRaw, ref, reactive, isRef, isReactive, shallowReactive, shallowRef, t
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    MyButton
   },
   data () {
     return {
