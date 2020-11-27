@@ -31,10 +31,19 @@ export default {
         let doubleAge = computed(() => {
             return user.age * 2;
         });
-        // watch 监听
-        watch(name, (value, newvalue) => {
-            console.log('watch 监听', val, newvalue);
+        // watch 监听 第一个参数不能直接写user.age
+        // watch(() => user.age, (value, prevalue) => {
+        //     console.log('watch 监听', value, prevalue);
+        // });
+        // watch(user, (value, prevalue) => {
+        //     console.log('watch 监听', value, prevalue);
+        // });
+        // watch 监听多个
+        watch([() => user.age, name], ([user, name], [preUser, preName]) => {
+            console.log('watch multiple', user);
         });
+
+
         console.log('name:::', name);
         return {
             name,

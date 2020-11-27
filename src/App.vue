@@ -1,22 +1,32 @@
-<!--
- * @Description: 请输入文件描述
- * @Author: liuyongsheng
- * @Date: 2020-05-27 01:50:14
--->
 <template>
-  <div>
-    {{ msg }} - {{ msg2 }}
+    <div>父元素</div>
+    <test :name="name"
+          test-attr="false"
+          @testFun="testFun"
+          :age="age">
+          <template v-slot:header>
+            <div>
+              我是一个slot
+            </div>
+          </template>
+    </test>
+    <!-- {{ msg }} - {{ msg2 }}
     <ul>
       <li v-for="(st, index) in state.stu"
           :key="st.id"
           @click="reMov(index)">{{st.name}}</li>
     </ul>
     <p>{{state3}}</p>
+    <div id="tele">
+      这就是：：
+    </div>
     <button @click="change">按钮</button>
     <hello-world :msg="msg"></hello-world>
     <div ref="box">我是box</div>
     <my-button></my-button>
-  </div>
+    <teleport to="#tele">
+      <div>我想测测teleport</div>
+    </teleport> -->
 </template>
 
 <script>
@@ -29,6 +39,7 @@
 
 */
 // 
+import Test from './components/Test.vue';
 import MyButton from './components/MyButton.vue';
 import HelloWorld from './components/HelloWorld.vue'
 import { removeFun } from './componsition/removeFun.js';
@@ -38,53 +49,74 @@ export default {
   name: 'App',
   components: {
     HelloWorld,
-    MyButton
+    MyButton,
+    Test
   },
   data () {
     return {
       msg2: 'assdasda'
     }
   },
-  mounted () {
-    console.log('this', this.$refs.box);
-  },
-  // setup 函数的执行时机，beforeCreate 和 created 之间
   setup () {
-    let msg = ref('我是谁!!!!');
-    let state2 = reactive({
-      name: 'lys',
-      sex: 'qwe'
-    });
-    let obj = {
-      tt: {
-        aa: '11'
+      console.log('setup');
+      function testFun () {
+        alert('1');
       }
-    }
-    let state3 = ref(obj.tt);
-    function change () {
-      state3.value.aa = '222';
-      console.log(state3, obj);
-    }
-    let box = ref(null);
+      return {
+        name: 'liuyongsheng',
+        age: '18',
+        testFun
+      }
+  },
+  // beforeCreate () {
+  //     console.log('beforeCreate');
+  // },
+  // created () {
+  //     console.log('created');
+  // },
+  // beforeMount () {
+  //     console.log('beforeMount');
+  // },
+  // mounted () {
+  //     console.log('mounted');
+  // },
+  // setup 函数的执行时机，beforeCreate 和 created 之间
+  // setup () {
+  //   let msg = ref('我是谁!!!!');
+  //   let state2 = reactive({
+  //     name: 'lys',
+  //     sex: 'qwe'
+  //   });
+  //   let obj = {
+  //     tt: {
+  //       aa: '11'
+  //     }
+  //   }
+  //   let state3 = ref(obj.tt);
+  //   function change () {
+  //     state3.value.aa = '222';
+  //     console.log(state3, obj);
+  //   }
+  //   let box = ref(null);
 
-    onMounted(() => {
-      console.log('mounted::', box.value);
-    });
+  //   onMounted(() => {
+  //     console.log('mounted::', box.value);
+  //   });
 
 
-    console.log('toRaw', state2, toRaw(state2), state3);
-    console.log('msg-ref', msg);
-    let { state, reMov } = removeFun();
-    console.log('reactive:::', state.stu);
-    return {
-      box,
-      msg,
-      state,
-      reMov,
-      state2,
-      change
-    }
-  }
+  //   console.log('toRaw', state2, toRaw(state2), state3);
+  //   console.log('msg-ref', msg);
+  //   let { state, reMov } = removeFun();
+  //   console.log('reactive:::', state.stu);
+  //   return {
+  //     box,
+  //     msg,
+  //     state,
+  //     reMov,
+  //     state2,
+  //     change
+  //   }
+  // }
 };
 
 </script>

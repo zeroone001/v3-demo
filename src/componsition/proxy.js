@@ -48,7 +48,6 @@ console.log(state);
 
 
 // 然后手写reactive
-
 function reactive (obj) {
     if (typeof obj === 'object') {
         // 需要写一个递归
@@ -67,22 +66,22 @@ function reactive (obj) {
                 }
             }
         }
+        return new Proxy(obj, {
+            get (obj, key) {
+                console.log('get', obj, key);
+                return obj[key];
+            },
+            set (obj, key, value) {
+                console.log('set', obj, key, value);
+                obj[key] = value;
+                console.log('更新UI界面');
+                return true;
+            }
+        });
     } else {
         console.log('obj需要是对象')
         return;
     }
-    return new Proxy(obj, {
-        get (obj, key) {
-            console.log('get', obj, key);
-            return obj[key];
-        },
-        set (obj, key, value) {
-            console.log('set', obj, key, value);
-            obj[key] = value;
-            console.log('更新UI界面');
-            return true;
-        }
-    });
 }
 
 function ref (val) {
